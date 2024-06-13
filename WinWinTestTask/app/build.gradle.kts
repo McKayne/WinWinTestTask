@@ -11,8 +11,13 @@ android {
         applicationId = "com.elnico.winwintesttask"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+
+        val versionMajor = 1
+        val versionMinor = 0
+        val versionPatch = 0
+        val versionSuffix = "test-task"
+        versionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch
+        versionName = "${versionMajor}.${versionMinor}.${versionPatch}-${versionSuffix}"
 
         buildConfigField("String", "APPSFLYER_API_KEY", "\"YgFzfcdAJcavXYmABVDnDb\"")
         buildConfigField("String", "ONESIGNAL_API_KEY", "\"babc516b-39e5-4c33-9dc3-ceaa67e78956\"")
@@ -21,6 +26,16 @@ android {
         buildConfigField("String", "GAME_URL", "\"https://akademija-mediciny.ru/htmlgames/6151794/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = "WinWinNikolayTaran v${variant.versionName}.apk"
+                output.outputFileName = outputFileName
+            }
     }
 
     buildTypes {
