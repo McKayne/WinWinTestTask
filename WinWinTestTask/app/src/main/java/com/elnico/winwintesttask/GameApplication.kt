@@ -1,6 +1,8 @@
 package com.elnico.winwintesttask
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.provider.Settings
 import android.util.Log
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.attribution.AppsFlyerRequestListener
@@ -14,16 +16,34 @@ import org.koin.core.context.startKoin
 
 class GameApplication: Application() {
 
+    lateinit var appUUID: String
+
     companion object {
         private const val TAG = "GameApp"
     }
 
+    @SuppressLint("HardwareIds")
     override fun onCreate() {
         super.onCreate()
-        AppsFlyerLib.getInstance().init(BuildConfig.APPSFLYER_API_KEY, null, this)
+        appUUID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+
+
+
+        startKoin {
+            androidContext(applicationContext)
+            modules(
+                listOf(
+                    getViewModelModule()
+                )
+            )
+        }
+    }
+
+    fun setupAnalytics(appsflyerApiKey: String, onesignalApiKey: String) {
+        AppsFlyerLib.getInstance().init(appsflyerApiKey, null, this)
         //AppsFlyerLib.getInstance().start(this)
 
-        AppsFlyerLib.getInstance().start(this, BuildConfig.APPSFLYER_API_KEY, object :
+        AppsFlyerLib.getInstance().start(this, appsflyerApiKey, object :
             AppsFlyerRequestListener {
             override fun onSuccess() {
                 Log.d(TAG, "Launch sent successfully")
@@ -37,20 +57,10 @@ class GameApplication: Application() {
         })
 
         OneSignal.Debug.logLevel = LogLevel.VERBOSE
-        OneSignal.initWithContext(this, BuildConfig.ONESIGNAL_API_KEY)
+        OneSignal.initWithContext(this, onesignalApiKey)
+        OneSignal.login(appUUID)
         CoroutineScope(Dispatchers.IO).launch {
             OneSignal.Notifications.requestPermission(false)
-        }
-
-        startKoin {
-            androidContext(applicationContext)
-            modules(
-                listOf(
-                    getApiModule(BuildConfig.INITIAL_CONFIG_BASE_URL),
-                    getViewModelModule(),
-                    getRepositoriesModule()
-                )
-            )
         }
     }
 }

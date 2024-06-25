@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -14,16 +15,10 @@ android {
 
         val versionMajor = 1
         val versionMinor = 0
-        val versionPatch = 0
+        val versionPatch = 1
         val versionSuffix = "test-task"
         versionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}-${versionSuffix}"
-
-        buildConfigField("String", "APPSFLYER_API_KEY", "\"YgFzfcdAJcavXYmABVDnDb\"")
-        buildConfigField("String", "ONESIGNAL_API_KEY", "\"babc516b-39e5-4c33-9dc3-ceaa67e78956\"")
-        buildConfigField("String", "INITIAL_CONFIG_BASE_URL", "\"https://pro-fix3.ru/\"")
-        buildConfigField("String", "INITIAL_CONFIG_KEY", "\"1rwy91ciu3w4ff3i51bu\"")
-        buildConfigField("String", "GAME_URL", "\"https://akademija-mediciny.ru/htmlgames/6151794/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,6 +64,12 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-config")
+
     // DI
     implementation("io.insert-koin:koin-core:3.2.2")
     implementation("io.insert-koin:koin-android:3.2.3")
@@ -88,6 +89,7 @@ dependencies {
 
     // OneSignal
     implementation("com.onesignal:OneSignal:[5.0.0, 5.99.99]")
+    implementation("androidx.webkit:webkit:1.11.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
