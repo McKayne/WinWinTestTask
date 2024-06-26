@@ -19,9 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WinWinTestTask"
         tools:targetApi="31">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".TrackerActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/Theme.WinWinTestTask">
             <intent-filter>
@@ -30,6 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".GameActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WinWinTestTask" />
     </application>
 
 </manifest>
