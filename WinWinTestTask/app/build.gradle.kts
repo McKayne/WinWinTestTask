@@ -15,7 +15,7 @@ android {
 
         val versionMajor = 1
         val versionMinor = 0
-        val versionPatch = 2
+        val versionPatch = 3
         val versionSuffix = "test-task"
         versionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}-${versionSuffix}"

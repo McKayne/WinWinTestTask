@@ -62,6 +62,8 @@ class TrackerFragment: WebViewFragment() {
                     val siteId = it["siteId"].orEmpty()
                     val version = it["version"].orEmpty()
 
+                    (requireActivity().application as GameApplication).setupAnalytics(appsflyerApiKey, onesignalApiKey)
+
                     setupGameWebView(binding.webView) { newProgress ->
                         binding.progressBar.visibility = if (newProgress < 100) View.VISIBLE else View.GONE
 

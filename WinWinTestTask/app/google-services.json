@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846831577445",
+    "project_id": "winwintest-12524",
+    "storage_bucket": "winwintest-12524.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846831577445:android:832fc3361976470743598c",
+        "android_client_info": {
+          "package_name": "com.testhh.apptyt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABtgXA5ccYl8A4kjn1yEWL3UVV6aOKvq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
