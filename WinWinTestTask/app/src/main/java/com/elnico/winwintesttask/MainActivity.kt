@@ -1,5 +1,6 @@
 package com.elnico.winwintesttask
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -56,5 +57,9 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("fallbackUrl", fallbackUrl)
 
         navController.navigate(R.id.gameFragment, bundle)
+    }
+
+    fun forceScreenOrientation(orientation: Int) {
+        requestedOrientation = orientation
     }
 }
