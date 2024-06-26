@@ -9,13 +9,13 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.elnico.winwintesttask"
+        applicationId = "com.testhh.apptyt"
         minSdk = 21
         targetSdk = 34
 
         val versionMajor = 1
         val versionMinor = 0
-        val versionPatch = 1
+        val versionPatch = 2
         val versionSuffix = "test-task"
         versionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch
         versionName = "${versionMajor}.${versionMinor}.${versionPatch}-${versionSuffix}"
