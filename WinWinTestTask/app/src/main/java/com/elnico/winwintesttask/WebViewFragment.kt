@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Message
@@ -108,10 +109,14 @@ open class WebViewFragment: Fragment() {
                     }
 
                     if (url.contains("jsontest")) {
+                        (activity as? MainActivity)?.forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
+
                         //settings.userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5507.209 Safari/537.36"
                         webView.loadUrl(fallbackURL)
                         //view?.loadUrl(url)
                     } else {
+                        (activity as? MainActivity)?.forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
                         view?.loadUrl(url)
                     }
 

@@ -1,6 +1,5 @@
 package com.elnico.winwintesttask
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -89,6 +88,5 @@ class TrackerFragment: WebViewFragment() {
     override fun onResume() {
         super.onResume()
 
-        (requireActivity() as MainActivity).forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     }
 }
