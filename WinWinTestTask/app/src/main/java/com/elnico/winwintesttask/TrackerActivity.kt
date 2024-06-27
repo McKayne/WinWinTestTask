@@ -1,15 +1,12 @@
 package com.elnico.winwintesttask
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.elnico.winwintesttask.databinding.ActivityTrackerBinding
 import kotlinx.coroutines.flow.filterNotNull
@@ -39,6 +36,8 @@ class TrackerActivity : WebViewActivity() {
 
         binding = ActivityTrackerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        webView = binding.webView
+        splashView = binding.splashView
 
         /////////////
 
@@ -46,10 +45,11 @@ class TrackerActivity : WebViewActivity() {
             val url = preferences.getString(TRACKER_VISITED, null)
 
             if (url != null) {
-                binding.logo.visibility = View.GONE
+                //binding.logo.visibility = View.GONE
                 binding.dummyView.setBackgroundColor(Color.BLACK)
 
                 if (url.contains("jsontest")) {
+                    splashView?.visibility = View.VISIBLE
                     forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
                 }
 
@@ -61,9 +61,9 @@ class TrackerActivity : WebViewActivity() {
 
                         if (url.contains("jsontest")) {
                             setupGameWebView(binding.webView) { newProgress ->
-                                binding.progressBar.visibility = if (newProgress < 100) View.VISIBLE else View.GONE
-
                                 if (newProgress == 100) {
+                                    binding.splashView.visibility = View.GONE
+                                    binding.progressBar.visibility = View.GONE
                                     binding.dummyView.visibility = View.GONE
                                 }
                             }
@@ -79,13 +79,8 @@ class TrackerActivity : WebViewActivity() {
                                 } else {
                                     ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                                 }
-
-                                //forceScreenOrientation(
                             )
                         }
-
-
-                        //binding.webView.loadUrl("$trackerBaseUrl/click.php?key=$trackerKey&external_onesignal_user_id=$appUUID&appsflyer_id=${appsflyerId}&advertising_id=${advertisingId}&type=af_status&version=${version}&site_id=${siteId}")
                     }
                 }
 
@@ -128,15 +123,6 @@ class TrackerActivity : WebViewActivity() {
 
                     val appUUID = (application as GameApplication).appUUID
                     binding.webView.loadUrl("$trackerBaseUrl/click.php?key=$trackerKey&external_onesignal_user_id=$appUUID&appsflyer_id=${appsflyerId}&advertising_id=${advertisingId}&type=af_status&version=${version}&site_id=${siteId}")
-
-                    /*navigateToContents(
-                        url = ,
-                        shouldCacheTrackerLink = true,
-                        fallbackUrl = fallbackUrl,
-                        orientation = null
-                    )*/
-
-                    //binding.webView.loadUrl("$trackerBaseUrl/click.php?key=$trackerKey&external_onesignal_user_id=$appUUID&appsflyer_id=${appsflyerId}&advertising_id=${advertisingId}&type=af_status&version=${version}&site_id=${siteId}")
                 }
             }
 
@@ -151,12 +137,4 @@ class TrackerActivity : WebViewActivity() {
             activityResultLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
     }
-
-
-
-    /*
-
-
-
-    */
 }

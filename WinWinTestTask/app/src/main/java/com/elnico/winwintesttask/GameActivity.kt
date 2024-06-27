@@ -2,10 +2,7 @@ package com.elnico.winwintesttask
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import com.elnico.winwintesttask.databinding.ActivityGameBinding
-import com.elnico.winwintesttask.databinding.ActivityTrackerBinding
 
 class GameActivity: WebViewActivity() {
 
@@ -13,10 +10,9 @@ class GameActivity: WebViewActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        hideStatusBar()
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        webView = binding.webView
 
         val url = intent?.getStringExtra("url")
         val shouldCacheTrackerLink = intent?.getBooleanExtra("shouldCacheTrackerLink", false)
@@ -31,19 +27,15 @@ class GameActivity: WebViewActivity() {
             }
 
             setupGameWebView(binding.webView) { newProgress ->
-                binding.progressBar.visibility = if (newProgress < 100) View.VISIBLE else View.GONE
+                //binding.progressBar.visibility = if (newProgress < 100) View.VISIBLE else View.GONE
 
                 if (newProgress == 100) {
                     binding.dummyView.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                 }
             }
 
             binding.webView.loadUrl(url)
         }
-    }
-
-    fun hideStatusBar() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 }

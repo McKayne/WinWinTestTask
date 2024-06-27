@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import android.util.Log
+import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.webkit.ConsoleMessage
 import android.webkit.CookieSyncManager
@@ -25,6 +27,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 
 open class WebViewActivity: AppCompatActivity() {
+
+    protected lateinit var webView: WebView
+    protected var splashView: View? = null
 
     protected lateinit var fallbackURL: String
 
@@ -52,6 +57,7 @@ open class WebViewActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideStatusBar()
 
         preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 
@@ -60,6 +66,14 @@ open class WebViewActivity: AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
+
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     protected fun forceScreenOrientation(orientation: Int) {
@@ -95,7 +109,10 @@ open class WebViewActivity: AppCompatActivity() {
                     view: WebView?,
                     request: WebResourceRequest?
                 ): Boolean {
-                    val url = request?.url.toString()
+                    var url = request?.url.toString()
+                    /*if (url.contains("jsontest")) {
+                        url = "https://land2getluck.com/l/6660c1aa2ef39e264f0a91cc?click_id=31515315&sub_id=smirnov"
+                    }*/
 
                     Log.v(TAG, "Now loading $url")
 
@@ -105,19 +122,14 @@ open class WebViewActivity: AppCompatActivity() {
                     }
 
                     if (url.contains("jsontest")) {
+                        splashView?.visibility = View.VISIBLE
+
                         /**
                          * Заглушка
                          */
                         forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
                         webView.loadUrl(fallbackURL)
-
-                        //
-                        /*(activity as? TrackerActivity)?.forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
-
-                        webView.loadUrl(fallbackURL)*/
                     } else {
-                        /*(activity as? TrackerActivity)?.forceScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)*/
-
                         /**
                          * Оффер
                          */
@@ -221,8 +233,25 @@ open class WebViewActivity: AppCompatActivity() {
 
         startActivity(intent)
         finish()
+    }
 
-        //navController.popBackStack()
-        //navController.navigate(R.id.gameFragment, bundle)
+    private fun hideStatusBar() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+
+
+        val decorView: View = window.decorView
+        val uiOptions: Int =
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        decorView.setSystemUiVisibility(uiOptions)
+
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        // Hide the nav bar and status bar
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // Hide nav bar
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN // Hide status bar
+                )
     }
 }
